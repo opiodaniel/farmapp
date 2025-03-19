@@ -2,13 +2,17 @@ package com.farm.farmapp.controller;
 
 import com.farm.farmapp.models.Employees;
 import com.farm.farmapp.service.EmployeeService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/employee")
+@RequestMapping("/employees")
 public class EmployeeController {
 
 
@@ -18,22 +22,42 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    @PostMapping("/add_employee/{farmId}")
-    public Employees EnterEmployee(@PathVariable Long farmId, @RequestBody Employees employees){
-        return employeeService.createEmployee(farmId, employees);
+    @PostMapping("/add_employee")
+    public Employees EnterEmployee(@RequestBody Employees employees){
+        return employeeService.createEmployee(employees);
     }
 
-    @GetMapping("/get_all")
-    public List<Employees> GetEmployees(){
-        return employeeService.getAllEmployee();
+    @PatchMapping("/assign_employee/{employeeId}/to_farm/{farmId}")
+    public Employees AssignEmployee( @PathVariable Long employeeId,  @PathVariable Long farmId){
+        return employeeService.AssignEmployee(employeeId, farmId);
     }
+
+    @PatchMapping("/remove_employee/{employeeId}/from_farm")
+    public Employees RemoveEmployee(@PathVariable Long employeeId){
+        return employeeService.RemoveEmployee(employeeId);
+    }
+
+
+    @GetMapping
+    public Page<Employees> getAllEmployees(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "salary") String sortBy,
+            @RequestParam(defaultValue = "true") boolean ascending
+    ) {
+        Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return employeeService.getAll(pageable);
+    }
+
+
     @GetMapping("/get/{id}")
     public Optional<Employees> GetEmployeeById(@PathVariable Long id){
         return employeeService.GetEmployeeById(id);
     }
-    @PutMapping("/update/{employee_id}/{farmId}")
-    public Employees UpdateEmployee(@PathVariable Long employee_id, @PathVariable Long farmId, @RequestBody Employees employees){
-        return employeeService.UpdateEmployeeDetail(employee_id, farmId, employees);
+    @PutMapping("/update/employee/{employee_id}")
+    public Employees UpdateEmployee(@PathVariable Long employee_id, @RequestBody Employees employees){
+        return employeeService.UpdateEmployeeDetail(employee_id, employees);
     }
     @DeleteMapping("/delete/{id}")
     public void DeleteEmployee(@PathVariable Long id){

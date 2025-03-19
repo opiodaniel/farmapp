@@ -3,7 +3,9 @@ package com.farm.farmapp.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -15,11 +17,10 @@ public class FarmSystem {
 
     private String farmName;
     private String location;
-    private String activities;
 
     @OneToMany(mappedBy = "farmSystem" , cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<Employees> employees;
+    private Set<Employees> employees = new HashSet<>();
 
     public Long getId(){
         return id;
@@ -39,17 +40,10 @@ public class FarmSystem {
         this.location = location;
     }
 
-    public String getActivities(){
-        return activities;
-    }
-    public void setActivities(String activities){
-        this.activities = activities;
-    }
-
-    public List<Employees> getEmployees(){
+    public Set<Employees> getEmployees(){
         return employees;
     }
-    public void setEmployees(List<Employees> employees){
+    public void setEmployees(Set<Employees> employees){
         this.employees =employees;
     }
 

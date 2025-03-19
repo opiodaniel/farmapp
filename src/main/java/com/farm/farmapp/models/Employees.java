@@ -1,6 +1,13 @@
 package com.farm.farmapp.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Employees {
@@ -11,12 +18,16 @@ public class Employees {
 
     private String firstName;
     private String lastName;
-
+    private String title;
     private String position;
+    private int salary;
 
     @ManyToOne
     @JoinColumn(name = "farm_id" , referencedColumnName = "id")
     private FarmSystem farmSystem;
+
+    @ManyToMany(mappedBy = "employees")
+    private Set<Activities> activities = new HashSet<>();
 
     public Long getId(){
         return id;
@@ -36,11 +47,25 @@ public class Employees {
         this.lastName = lastName ;
     }
 
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public String getPosition(){
         return position;
     }
     public void setPosition(String position){
         this.position =position;
+    }
+
+    public int getSalary() {
+        return salary;
+    }
+    public void setSalary(int salary) {
+        this.salary = salary;
     }
 
     public FarmSystem getFarmSystem(){
@@ -50,4 +75,11 @@ public class Employees {
         this.farmSystem = farmSystem;
     }
 
+    public Set<Activities> getActivities() {
+        return activities;
+    }
+
+    public void setActivities(Set<Activities> activities) {
+        this.activities = activities;
+    }
 }

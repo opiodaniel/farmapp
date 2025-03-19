@@ -35,9 +35,6 @@ public class FarmSystemService {
         if (!StringUtils.hasText(farmSystem.getLocation())) {
             throw new IllegalArgumentException("Location is required and cannot be blank");
         }
-        if (!StringUtils.hasText(farmSystem.getActivities())) {
-            throw new IllegalArgumentException("Activities field cannot be blank");
-        }
     }
 
     //Getting all
@@ -78,11 +75,6 @@ public class FarmSystemService {
             farmSystem.setLocation(farmSystemDetail.getLocation());
         }
 
-        if (!StringUtils.hasText(farmSystemDetail.getActivities())) {
-            farmSystem.setActivities(farmSystem.getActivities());
-        }else{
-            farmSystem.setActivities(farmSystemDetail.getActivities());
-        }
         return farmSystemRepository.save(farmSystem);
     }
 
