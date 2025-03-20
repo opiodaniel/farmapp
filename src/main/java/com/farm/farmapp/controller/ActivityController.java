@@ -5,6 +5,8 @@ import com.farm.farmapp.models.Employees;
 import com.farm.farmapp.repository.EmployeeRepository;
 import com.farm.farmapp.service.ActivityService;
 import com.farm.farmapp.service.EmployeeService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,11 +45,22 @@ public class ActivityController {
         return activityService.getAllActivities();
     }
 
+//    @GetMapping("/get/{id}")
+//    public Optional<Activities> getActivity(@PathVariable Long id){
+//        return activityService.getActivity(id);
+//    }
+
     @GetMapping("/get/{id}")
-    public Optional<Activities> getActivity(@PathVariable Long id){
-        return activityService.getActivity(id);
+    public ResponseEntity<Activities> getActivity(@PathVariable Long id) {
+        Optional<Activities> activity = activityService.getActivity(id);
+
+        return activity.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
-     @PutMapping("/update/{activity_id}")
+
+
+
+    @PutMapping("/update/{activity_id}")
     public Activities updateActivity(@PathVariable Long activity_id, @RequestBody Activities activities){
         return activityService.updateActivity(activity_id, activities);
     }

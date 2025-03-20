@@ -15,7 +15,7 @@ public class EmployeeFile {
     private Long fileSize;
     private LocalDateTime uploadDate;
 
-    @Lob
+    @Lob  //used to store large data such as images, videos, files, or long text data.
     private byte[] fileData;
 
     public Long getId() {

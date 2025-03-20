@@ -106,18 +106,12 @@ public class EmployeeService {
     }
 
 
-    public void DeleteEmployee(Long id){
-        validateDeleteEmployee(id);
-        employeeRepository.deleteById(id);
-    }
-
-    private void validateDeleteEmployee(Long id) {
-        // Check if the FarmSystem with the given id exists
-        if (!farmSystemRepository.existsById(id)) {
-            // Throw an exception if it doesn't exist
+    public void DeleteEmployee(Long id) {
+        try {
+            employeeRepository.findById(id).orElseThrow();
+            employeeRepository.deleteById(id);
+        } catch (Exception ex) {
             throw new IllegalArgumentException("Employee You Are Trying To Delete Does Not Exist");
-        }
+        };
     }
-
-
 }

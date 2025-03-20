@@ -1,5 +1,6 @@
 package com.farm.farmapp.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
@@ -19,10 +20,10 @@ public class Activities {
     String activityName;
     String location;
 
-//    @ManyToMany(mappedBy = "activities")
-    @ManyToMany
-    @JoinTable(name="activity_employee", joinColumns = @JoinColumn(name="activity_id"), inverseJoinColumns = @JoinColumn(name="employee_activity"))
+    @ManyToMany()
+    @JoinTable(name="activity_employee", joinColumns = @JoinColumn(name="activity_id"), inverseJoinColumns = @JoinColumn(name="employee_id"))
     @JsonIgnore
+    //@JsonBackReference
     private Set<Employees> employees = new HashSet<>();
 
 

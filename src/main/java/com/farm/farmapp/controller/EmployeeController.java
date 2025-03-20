@@ -50,7 +50,6 @@ public class EmployeeController {
         return employeeService.getAll(pageable);
     }
 
-
     @GetMapping("/get/{id}")
     public Optional<Employees> GetEmployeeById(@PathVariable Long id){
         return employeeService.GetEmployeeById(id);
@@ -60,8 +59,9 @@ public class EmployeeController {
         return employeeService.UpdateEmployeeDetail(employee_id, employees);
     }
     @DeleteMapping("/delete/{id}")
-    public void DeleteEmployee(@PathVariable Long id){
+    public String DeleteEmployee(@PathVariable Long id){
         employeeService.DeleteEmployee(id);
+        return "Employee Successfully Deleted";
     }
 
 }

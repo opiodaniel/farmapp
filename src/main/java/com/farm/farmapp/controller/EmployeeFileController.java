@@ -40,8 +40,6 @@ public class EmployeeFileController {
         return ResponseEntity.ok(files);
     }
 
-
-
     // 2. Download a file by ID
     @GetMapping("/download/{id}")
     public ResponseEntity<byte[]> downloadFile(@PathVariable Long id) {
