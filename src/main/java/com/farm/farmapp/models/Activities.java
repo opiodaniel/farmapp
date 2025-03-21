@@ -3,6 +3,7 @@ package com.farm.farmapp.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -16,8 +17,9 @@ public class Activities {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @NotBlank(message = "Activity name is required and cannot be blank")
     String activityName;
+    @NotBlank(message = "Location name is required and cannot be blank")
     String location;
 
     @ManyToMany()

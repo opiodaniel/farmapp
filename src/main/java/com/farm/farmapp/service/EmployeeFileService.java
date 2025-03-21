@@ -3,6 +3,7 @@ package com.farm.farmapp.service;
 import com.farm.farmapp.DTO.FileResponse;
 import com.farm.farmapp.models.EmployeeFile;
 import com.farm.farmapp.repository.EmployeeFileRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
@@ -32,10 +33,18 @@ public class EmployeeFileService {
     }
 
 
-    public List<FileResponse> getAllFiles() {
+    public List<FileResponse> getFilesInJson() {
         List<EmployeeFile> files = employeeFileRepository.findAll();
         return files.stream()
                 .map(file -> new FileResponse(file.getId(), file.getFileName(), file.getFileType(), file.getFileSize(), file.getUploadDate()))
+                .collect(Collectors.toList());
+    }
+
+    public List<byte[]> getAllFiles() {
+        List<EmployeeFile> files = employeeFileRepository.findAll();
+
+        return files.stream()
+                .map(EmployeeFile::getFileData) // Extracts the file content
                 .collect(Collectors.toList());
     }
 

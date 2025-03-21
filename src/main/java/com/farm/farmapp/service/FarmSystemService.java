@@ -5,6 +5,7 @@ import com.farm.farmapp.repository.FarmSystemRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,24 +18,9 @@ public class FarmSystemService {
         this.farmSystemRepository = farmSystemRepository;
     }
 
-
     // Creating
     public FarmSystem CreateFarmSystem(FarmSystem farmSystem){
-        validateFarmSystem(farmSystem);
         return farmSystemRepository.save(farmSystem);
-    }
-
-
-    private void validateFarmSystem(FarmSystem farmSystem) {
-        if (farmSystem == null) {
-            throw new IllegalArgumentException("FarmSystem object cannot be null");
-        }
-        if (!StringUtils.hasText(farmSystem.getFarmName())) {
-            throw new IllegalArgumentException("Farm name is required and cannot be blank");
-        }
-        if (!StringUtils.hasText(farmSystem.getLocation())) {
-            throw new IllegalArgumentException("Location is required and cannot be blank");
-        }
     }
 
     //Getting all
@@ -43,54 +29,59 @@ public class FarmSystemService {
     }
     //Get One
     public Optional<FarmSystem> GetFarmSystemById(Long id){
-        validateGetFarmSystemById(id);
+        FarmSystem existingFarm = farmSystemRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Farm not found with id: " + id));
         return farmSystemRepository.findById(id);
     }
-    private void validateGetFarmSystemById(Long id) {
-        // Check if the FarmSystem with the given id exists
-        if (!farmSystemRepository.existsById(id)) {
-            // Throw an exception if it doesn't exist
-            throw new IllegalArgumentException("Farm does not exist");
-        }
-    }
+
     //Update By ID
-    public FarmSystem UpdateFarmSystem(Long id, FarmSystem farmSystemDetail){
+    public FarmSystem UpdateFarmSystem(Long id, FarmSystem farmSystemDetails) {
+        FarmSystem existingFarm = farmSystemRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Farm not found with id: " + id));
 
-//        validateUpdateFarmSystem(id, farmSystemDetail);
-        if (!farmSystemRepository.existsById(id)) {
-            // Throw an exception if it doesn't exist
-            throw new IllegalArgumentException("Farm You Are Trying To Update Does Not Exist");
-        }
-        FarmSystem farmSystem = farmSystemRepository.findById(id).orElseThrow();
-
-        if (!StringUtils.hasText(farmSystemDetail.getFarmName())) {
-            farmSystem.setFarmName(farmSystem.getFarmName());
-        }else {
-            farmSystem.setFarmName(farmSystemDetail.getFarmName());
-        }
-
-        if (!StringUtils.hasText(farmSystemDetail.getLocation())) {
-            farmSystem.setLocation(farmSystem.getLocation());
-        }else{
-            farmSystem.setLocation(farmSystemDetail.getLocation());
+        // Dynamically update only non-null fields
+        for (Field field : FarmSystem.class.getDeclaredFields()) {
+            field.setAccessible(true);
+            try {
+                Object newValue = field.get(farmSystemDetails);
+                if (newValue != null) {
+                    field.set(existingFarm, newValue);
+                }
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException("Error updating field: " + field.getName(), e);
+            }
         }
 
-        return farmSystemRepository.save(farmSystem);
+        return farmSystemRepository.save(existingFarm);
     }
+
+
+//    public FarmSystem UpdateFarmSystem(Long id, FarmSystem farmSystemDetail){
+//
+//        farmSystemRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("Farm You Are Trying To Update Does Not Exist"));
+//        FarmSystem farmSystem = farmSystemRepository.findById(id).orElseThrow();
+//
+//        if (!StringUtils.hasText(farmSystemDetail.getFarmName())) {
+//            farmSystem.setFarmName(farmSystem.getFarmName());
+//        }else {
+//            farmSystem.setFarmName(farmSystemDetail.getFarmName());
+//        }
+//
+//        if (!StringUtils.hasText(farmSystemDetail.getLocation())) {
+//            farmSystem.setLocation(farmSystem.getLocation());
+//        }else{
+//            farmSystem.setLocation(farmSystemDetail.getLocation());
+//        }
+//
+//        return farmSystemRepository.save(farmSystem);
+//    }
 
     // Delete FarmSystem
     public void DeleteFarmSystem(Long id){
-        validateDeleteFarmSystem(id);
+        FarmSystem existingFarm = farmSystemRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Farm not found with id: " + id));
         farmSystemRepository.deleteById(id);
 
-    }
-
-    private void validateDeleteFarmSystem(Long id) {
-        // Check if the FarmSystem with the given id exists
-        if (!farmSystemRepository.existsById(id)) {
-            // Throw an exception if it doesn't exist
-            throw new IllegalArgumentException("Farm You Are Trying To Delete Does Not Exist");
-        }
     }
 
 }

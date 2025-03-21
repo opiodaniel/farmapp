@@ -1,6 +1,7 @@
 package com.farm.farmapp.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
 
@@ -15,11 +16,15 @@ public class Employees {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @NotBlank(message = "First Name is required and cannot be blank")
     private String firstName;
+    @NotBlank(message = "Last Name is required and cannot be blank")
     private String lastName;
+    @NotBlank(message = "Employee Title is required and cannot be blank")
     private String title;
+    @NotBlank(message = "Employee Position is required and cannot be blank")
     private String position;
+    @NotBlank(message = "Salary is required and cannot be blank")
     private int salary;
 
     @ManyToOne

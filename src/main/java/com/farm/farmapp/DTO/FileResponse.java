@@ -7,6 +7,7 @@ public class FileResponse {
     private String fileName;
     private String fileType;
     private Long fileSize;
+    //private byte[] fileData;  // ❌ Too large for JSON! // filed fileData Not include inside DTO
     private LocalDateTime uploadDate;
 
     public FileResponse(Long id, String fileName, String fileType, long size, LocalDateTime uploadDate) {

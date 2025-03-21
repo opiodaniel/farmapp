@@ -15,8 +15,13 @@ import java.util.List;
 @RequestMapping("/audit-logs")
 public class AuditLogController {
 
-    @Autowired
-    private AuditLogRepository auditLogRepository;
+
+    private final AuditLogRepository auditLogRepository;
+
+    public AuditLogController(AuditLogRepository auditLogRepository){
+        this.auditLogRepository =auditLogRepository;
+    }
+
 
     // Fetch logs for a specific table (e.g., "employees")
     @GetMapping("/{tableName}")
@@ -42,9 +47,9 @@ public class AuditLogController {
 //record_id INT,
 //timestamp TIMESTAMP DEFAULT NOW()
 //);
-
+//
 // ==================INSERT===================
-
+//
 //CREATE OR REPLACE FUNCTION log_employee_insert() RETURNS TRIGGER AS $$
 //BEGIN
 //INSERT INTO audit_logs (table_name, action, record_id, timestamp)
@@ -52,8 +57,8 @@ public class AuditLogController {
 //RETURN NEW;
 //END;
 //$$ LANGUAGE plpgsql;
-
-
+//
+//
 //CREATE TRIGGER employee_insert_trigger
 //AFTER INSERT ON employees
 //FOR EACH ROW EXECUTE FUNCTION log_employee_insert();

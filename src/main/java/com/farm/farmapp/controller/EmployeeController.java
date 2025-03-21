@@ -1,11 +1,15 @@
 package com.farm.farmapp.controller;
 
+import com.farm.farmapp.DTO.ApiResponse;
 import com.farm.farmapp.models.Employees;
+import com.farm.farmapp.models.FarmSystem;
 import com.farm.farmapp.service.EmployeeService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,8 +27,9 @@ public class EmployeeController {
     }
 
     @PostMapping("/add_employee")
-    public Employees EnterEmployee(@RequestBody Employees employees){
-        return employeeService.createEmployee(employees);
+    public  ResponseEntity<ApiResponse<Employees>> EnterEmployee(@Valid @RequestBody Employees employees){
+         Employees createdEmployee = employeeService.createEmployee(employees);
+        return ResponseEntity.ok(new ApiResponse<>("Employee created successfully!", createdEmployee));
     }
 
     @PatchMapping("/assign_employee/{employeeId}/to_farm/{farmId}")
@@ -61,7 +66,7 @@ public class EmployeeController {
     @DeleteMapping("/delete/{id}")
     public String DeleteEmployee(@PathVariable Long id){
         employeeService.DeleteEmployee(id);
-        return "Employee Successfully Deleted";
+        return "Successfully Deleted Employee With Id: "+ id;
     }
 
 }
