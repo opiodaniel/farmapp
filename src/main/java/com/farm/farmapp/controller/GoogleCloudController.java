@@ -30,6 +30,9 @@ public class GoogleCloudController  {
     public ResponseEntity<EmployeeFile> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
         String fileUrl = storageService.uploadFile(file);
 
+        //storageService.printBucketName();
+        //storageService.printGcpFileName();
+
         EmployeeFile employeeFile = new EmployeeFile();
         employeeFile.setFileName(file.getOriginalFilename());
         employeeFile.setFileType(file.getContentType());
