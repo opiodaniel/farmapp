@@ -33,20 +33,20 @@ public class EmployeeFileService {
     }
 
 
-    public List<FileResponse> getFilesInJson() {
-        List<EmployeeFile> files = employeeFileRepository.findAll();
-        return files.stream()
-                .map(file -> new FileResponse(file.getId(), file.getFileName(), file.getFileType(), file.getFileSize(), file.getUploadDate()))
-                .collect(Collectors.toList());
-    }
-
-    public List<byte[]> getAllFiles() {
-        List<EmployeeFile> files = employeeFileRepository.findAll();
-
-        return files.stream()
-                .map(EmployeeFile::getFileData) // Extracts the file content
-                .collect(Collectors.toList());
-    }
+//    public List<FileResponse> getFilesInJson() {
+//        List<EmployeeFile> files = employeeFileRepository.findAll();
+//        return files.stream()
+//                .map(file -> new FileResponse(file.getId(), file.getFileName(), file.getFileType(), file.getFileSize(), file.getUploadDate()))
+//                .collect(Collectors.toList());
+//    }
+//
+//    public List<byte[]> getAllFiles() {
+//        List<EmployeeFile> files = employeeFileRepository.findAll();
+//
+//        return files.stream()
+//                .map(EmployeeFile::getFileData) // Extracts the file content
+//                .collect(Collectors.toList());
+//    }
 
 
     public Optional<EmployeeFile> getFile(Long id) {

@@ -15,6 +15,8 @@ public class EmployeeFile {
     private Long fileSize;
     private LocalDateTime uploadDate;
 
+    private String fileUrl; // Store URL instead of byte data
+
     @Lob  //used to store large data such as images, videos, files, or long text data.
     private byte[] fileData;
 
@@ -60,5 +62,13 @@ public class EmployeeFile {
 
     public void setUploadDate(LocalDateTime uploadDate) {
         this.uploadDate = uploadDate;
+    }
+
+    public String getFileUrl() {
+        return fileUrl;
+    }
+
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
     }
 }

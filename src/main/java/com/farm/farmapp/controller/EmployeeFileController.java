@@ -35,18 +35,18 @@ public class EmployeeFileController {
         }
     }
     // FileResponse comes from DTO package
-    @GetMapping("/json_files")
-    public ResponseEntity<List<FileResponse>> getFilesInJson() {
-        List<FileResponse> files = employeeFileService.getFilesInJson();
-        return ResponseEntity.ok(files);
-    }
-
-    @GetMapping
-    public ResponseEntity<List<byte[]>> getAllFiles() {
-        List<byte[]> fileContents = employeeFileService.getAllFiles();
-        return ResponseEntity.ok()
-                .body(fileContents); // Returns the raw file content
-    }
+//    @GetMapping("/json_files")
+//    public ResponseEntity<List<FileResponse>> getFilesInJson() {
+//        List<FileResponse> files = employeeFileService.getFilesInJson();
+//        return ResponseEntity.ok(files);
+//    }
+//
+//    @GetMapping
+//    public ResponseEntity<List<byte[]>> getAllFiles() {
+//        List<byte[]> fileContents = employeeFileService.getAllFiles();
+//        return ResponseEntity.ok()
+//                .body(fileContents); // Returns the raw file content
+//    }
 
 
     // 2. Download a file by ID

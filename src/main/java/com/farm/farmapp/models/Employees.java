@@ -24,7 +24,7 @@ public class Employees {
     private String title;
     @NotBlank(message = "Employee Position is required and cannot be blank")
     private String position;
-    @NotBlank(message = "Salary is required and cannot be blank")
+    @NotNull(message = "Salary is required and cannot be blank")
     private int salary;
 
     @ManyToOne
